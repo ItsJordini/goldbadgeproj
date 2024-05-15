@@ -8,7 +8,7 @@ public class MenuItem
     public List<string> Ingredients { get; set; }
     public decimal Price { get; set; }
 
-    // Constructor(s) if needed
+    // Constructor(s) if needed Still not sure if needed 5/11
     public MenuItem(int mealNumber, string mealName, string description, List<string> ingredients, decimal price)
     {
         MealNumber = mealNumber;
@@ -16,5 +16,12 @@ public class MenuItem
         Description = description;
         Ingredients = ingredients;
         Price = price;
+    }
+
+    //Additional constructor 
+    public MenuItem()
+    {
+        //Lets Init Ingredients list 
+        Ingredients = new List<string>();
     }
 }

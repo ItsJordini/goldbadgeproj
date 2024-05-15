@@ -1,6 +1,6 @@
-﻿namespace CafeMenu
+﻿namespace CafeMenu;
 
-    class Program
+class Program
 {
     static void Main(string[] args)
     {
@@ -14,7 +14,9 @@
             Console.WriteLine("Welcome to the Cafe Menu Management System!");
             Console.WriteLine("1. Add Menu Item");
             Console.WriteLine("2. View All Menu Items");
-            Console.WriteLine("3. Exit");
+            Console.WriteLine("3. Update Menu Item");
+            Console.WriteLine("4. Delete Menu Item");
+            Console.WriteLine("5. Exit");
             Console.Write("Enter your choice: ");
 
             if (int.TryParse(Console.ReadLine(), out int choice))
@@ -28,6 +30,12 @@
                         ViewAllMenuItems(repository);
                         break;
                     case 3:
+                        UpdateMenuItem(repository);
+                        break;
+                    case 4:
+                        DeleteMenuItem(repository);
+                        break;
+                    case 5:
                         isRunning = false;
                         Console.WriteLine("Exiting the program...");
                         break;
@@ -83,6 +91,67 @@
             Console.WriteLine($"Ingredients: {string.Join(", ", item.Ingredients)}");
             Console.WriteLine($"Price: {item.Price:C}");
             Console.WriteLine();
+        }
+    }
+    static void UpdateMenuItem(MenuItemRepository repository)
+    {
+        Console.WriteLine("Updateing Menu Item:");
+        Console.WriteLine("Enter meal number of the item to update: ");
+        if (int.TryParse(Console.ReadLine(), out int MealNumber))
+        {
+            var existingItem = repository.GetMenuItemByNumber(MealNumber);
+            if (existingItem != null)
+            {
+                Console.WriteLine("Enter updated information:");
+                //Prompt use for updated info
+                Console.WriteLine("Enter meal name: ");
+                string mealName = Console.ReadLine();
+                Console.Write("Enter description: ");
+                string description = Console.ReadLine();
+                Console.Write("Enter ingredients (comma-sperarated): ");
+                string[] ingredients = Console.ReadLine().Split(',');
+                Console.Write("Enter price: ");
+                decimal price = decimal.Parse(Console.ReadLine());
+
+                //Create updted item
+                MenuItem updatedItem = new MenuItem
+                {
+                    MealNumber = mealNumber,
+                    MealName = mealName,
+                    Description = description,
+                    Ingredients = ingredients.ToList(),
+                    Price = price
+                };
+
+                //Call repo method to update item 
+                if (repository.UpdateMenuItem(mealNumber, updatedItem))
+                {
+                    Console.WriteLine("Menu item updated successfully!");
+                }
+                else
+                {
+                    Console.WriteLine("Failed to update menu item.");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Invalid input. Please an existing menu item {mealNumber} not found");
+            }
+        }
+
+        static void DeleteMenuItem(MenuItemRepository repository)
+        {
+            Console.WriteLine("Delete a menu item");
+            Console.WriteLine("Enter a meal number of the item to delete: ");
+            if (int.TryParse(Console.ReadLine(), out int mealNumber))
+            {
+                //Call RemoveMenuItem method in repo
+                //Handle success/Fail
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Please enter number.");
+            }
         }
     }
 }
